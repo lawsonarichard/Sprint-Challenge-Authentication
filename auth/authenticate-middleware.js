@@ -2,14 +2,22 @@
   complete the middleware code to check if the user is logged in
   before granting access to the next middleware/route handler
 */
+const jwt = require("jsonwebtoken");
+const secrets = require("../config/secrets");
 
-const bcrypt = require("bcryptjs");
-const Users = require("../users/users-model.js");
 module.exports = (req, res, next) => {
-  console.log("req session", req.session);
-  if (req.session && req.session.user) {
-    next();
+  const token = req.headers.authorization;
+
+  if (token) {
+    jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
+      if (err) {
+        res.status(401).json({ message: "Invalid token" });
+      } else {
+        req.user = decodedToken;
+        next();
+      }
+    });
   } else {
-    res.status(401).json({ message: "You Shall not Pass!" });
+    res.status(400).json({ message: "You shall not PASS!" });
   }
 };

@@ -41,9 +41,9 @@ server.use(
 );
 server.use(express.json());
 server.use(session(sessionConfig));
-server.use("/api/users", usersRouter);
 server.use("/api/auth", authRouter);
 server.use("/api/jokes", authenticate, jokesRouter);
+server.use("/api/users", authenticate, usersRouter);
 
 server.get("/", (req, res) => {
   res.json({ message: "Welcome" });

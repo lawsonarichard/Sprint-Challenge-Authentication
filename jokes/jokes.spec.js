@@ -15,4 +15,12 @@ describe("jokes router ", () => {
 
     expect(res.status).toBe(401);
   });
+
+  it("get request should get 401 as not logged in", async () => {
+    const res = await request(server)
+      .get("/api/jokes")
+      .set("Accept", "application/json");
+
+    expect(res.status).toBe(401);
+  });
 });
