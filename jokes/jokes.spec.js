@@ -1,17 +1,18 @@
-const users = require("./jokes-router");
-const db = require("../database/dbConfig");
+const request = require("supertest");
 
-it("Gets the test endpoint", async done => {
-  // Sends GET Request to /api/jokes endpoint
-  const res = await request.get("/api/jokes");
+const server = require("../api/server.js");
+const db = require("../database/dbConfig.js");
 
-  // ...
-  done();
-});
-it("gets the test endpoint", async done => {
-  const response = await request.get("/api/jokes");
+describe("jokes router ", () => {
+  beforeEach(async () => {
+    await db("users").truncate();
+  });
 
-  expect(response.status).toBe(400);
-  expect(response.body.message).toBe("pass!");
-  done();
+  it("get request should get 401 as not logged in", async () => {
+    const res = await request(server)
+      .get("/api/jokes")
+      .set("Accept", "application/json");
+
+    expect(res.status).toBe(401);
+  });
 });
