@@ -1,8 +1,9 @@
-const users = require("./users-model");
-const router = express.Router();
-const authenticate = require("../auth/authenticate-middleware");
+const express = require("express");
 
-router.get("/", authenticate, (req, res) => {
+const router = express.Router();
+const users = require("./users-model");
+
+router.get("/", (req, res) => {
   users
     .find()
     .then(users => {

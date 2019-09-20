@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const authenticate = require("../auth/authenticate-middleware.js");
 const authRouter = require("../auth/auth-router.js");
 const jokesRouter = require("../jokes/jokes-router.js");
-const usersRouter = require("../users/users-model");
+const usersRouter = require("../users/users-router");
 
 const session = require("express-session");
 const KnexSessionStore = require("connect-session-knex")(session);
@@ -41,9 +41,9 @@ server.use(
 );
 server.use(express.json());
 server.use(session(sessionConfig));
+server.use("/api/users", usersRouter);
 server.use("/api/auth", authRouter);
 server.use("/api/jokes", authenticate, jokesRouter);
-server.use("/api/users", usersRouter);
 
 server.get("/", (req, res) => {
   res.json({ message: "Welcome" });
